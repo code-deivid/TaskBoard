@@ -21,7 +21,7 @@ const iniciarSesion = async (): Promise<IAuthResponse> => {
   try {
     const perfil = await login(email.value, password.value)
     form.value?.reset()
-    await router.push('/home')
+    await router.push('/dashboard')
 
     return {
       ok: true,

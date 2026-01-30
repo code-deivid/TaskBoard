@@ -1,24 +1,15 @@
 import { auth } from '@/firebase/config'
-import { ref } from 'vue'
-
 import type { IAuthResponse } from '@/models/authResponse'
 
 import {
     createUserWithEmailAndPassword,
-    onAuthStateChanged,
     sendEmailVerification,
     signInWithEmailAndPassword,
     signOut,
-    type User,
+
 } from 'firebase/auth'
 
-export const usuarioActual = ref<User | null>(null)
-export const authCargado = ref<boolean>(false)
 
-onAuthStateChanged(auth, (user) => {
-    usuarioActual.value = user
-    authCargado.value = true
-})
 
 
 export const registrar = async (email: string, password: string): Promise<IAuthResponse> => {
