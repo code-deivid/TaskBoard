@@ -45,8 +45,10 @@ const iniciarSesion = async (): Promise<IAuthResponse> => {
       class="p-4 bg-(--background-card) gap-2 h-dvh w-full flex flex-col items-center justify-center"
     >
       <template #subtitle>
-        <h1>TaskBoard</h1>
-        <p>Un lugar para adquirir tus tareas</p>
+        <div class="max-w-125 w-full gap-5 flex flex-col items-center justify-center">
+          <h1>TaskBoard</h1>
+          <p class="text-(--label-text-color)">Un lugar para adquirir tus tareas</p>
+        </div>
       </template>
 
       <template #form>
@@ -103,5 +105,31 @@ a {
   text-decoration: none;
   display: flex;
   font-weight: bold;
+}
+
+label {
+  color: var(--label-text-color);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 13px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: 600;
+
+  input {
+    outline: none;
+    padding: 12px;
+    font-size: 0.9rem;
+    border: 1px solid var(--label-text-color);
+    border-radius: 10px;
+
+    &::placeholder {
+      color: var(--label-text-color);
+    }
+    &:focus {
+      border: 1px solid var(--input-focus);
+    }
+  }
 }
 </style>
