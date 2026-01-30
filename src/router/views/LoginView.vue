@@ -47,7 +47,7 @@ const iniciarSesion = async (): Promise<IAuthResponse> => {
       <template #subtitle>
         <div class="max-w-125 w-full gap-5 flex flex-col items-center justify-center">
           <h1>TaskBoard</h1>
-          <p class="text-(--label-text-color)">Un lugar para adquirir tus tareas</p>
+          <p class="text-(--label-text-color)">Un lugar para solventar tus tareas</p>
         </div>
       </template>
 
@@ -74,7 +74,7 @@ const iniciarSesion = async (): Promise<IAuthResponse> => {
       <template #card-footer>
         <div class="flex gap-2">
           <p>No tienes cuenta?</p>
-          <!-- <router-link to="/register">Registrarse</router-link> -->
+          <router-link to="/register">Registrarse</router-link>
         </div>
       </template>
     </FormLayout>

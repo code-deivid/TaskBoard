@@ -8,21 +8,19 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const form = useTemplateRef('FORM_ELEMENT')
-
 const email = ref<string>('')
 const password = ref<string>('')
 const confirmPassword = ref<string>('')
 
 const coinciden = computed((): boolean => confirmPassword.value === password.value)
 
-const puedeEnviar = computed(() => {
-  return (
+const puedeEnviar = computed(
+  (): boolean =>
     email.value.trim().length > 0 &&
     password.value.trim().length > 0 &&
     confirmPassword.value.trim().length > 0 &&
-    coinciden.value
-  )
-})
+    coinciden.value,
+)
 
 const register = async (): Promise<IAuthResponse> => {
   try {
@@ -62,7 +60,7 @@ const register = async (): Promise<IAuthResponse> => {
       <template #subtitle>
         <div class="max-w-125 w-full gap-5 flex flex-col items-center justify-center">
           <h1>TaskBoard</h1>
-          <p class="text-(--label-text-color)">Un lugar para adquirir tus tareas</p>
+          <p class="text-(--label-text-color)">Un lugar para solventar tus tareas</p>
         </div>
       </template>
 
@@ -83,7 +81,7 @@ const register = async (): Promise<IAuthResponse> => {
           </label>
           <label>
             <p>Confirmar contraseña</p>
-            <input v-model="confirmPassword" placeholder="confirmarcontraseña" type="password" />
+            <input v-model="confirmPassword" placeholder="repite tu contraseña" type="password" />
           </label>
 
           <button type="submit" :disabled="!puedeEnviar">Iniciar sesión</button>
@@ -92,8 +90,8 @@ const register = async (): Promise<IAuthResponse> => {
 
       <template #card-footer>
         <div class="flex gap-2">
-          <p>No tienes cuenta?</p>
-          <!-- <router-link to="/register">Registrarse</router-link> -->
+          <p>¿Ya tienes cuenta?</p>
+          <router-link to="/login">Inicia sesión</router-link>
         </div>
       </template>
     </FormLayout>
