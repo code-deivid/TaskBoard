@@ -7,6 +7,7 @@ import { useOpen } from '@/stores/useOpen'
 import HeaderNav from '@/components/HeaderNav.vue'
 import Nav from '@/components/Nav.vue'
 import CardsView from '@/components/CardsView.vue'
+import Spinner from '@/components/SpinnerComponent.vue'
 
 import type { Estado } from '@/models/estadoFiltro'
 import type { ITarea } from '@/models/tarea'
@@ -14,6 +15,7 @@ import type { ITarea } from '@/models/tarea'
 const open = useOpen()
 const listaTareas = ref<ITarea[]>([])
 const estado = ref<Estado>('todas')
+const loadingSpinner = ref(true)
 
 const tareasFiltradas = computed(() => {
   let tareas = listaTareas.value
@@ -43,22 +45,21 @@ const asignarTarea = async (tarea: ITarea) => {
     asignedTo: uid,
   })
 
- 
   await setDoc(doc(db, 'usuarios', uid, 'workspace', tarea.id), {
     tareaId: tarea.id,
     todo: tarea.todo,
     completed: tarea.completed,
     asigned: true,
-
   })
 
   listaTareas.value = listaTareas.value.filter((t) => t.id !== tarea.id)
 }
 
 onMounted(() => {
-  open.toggleMenu()
+  open.isOpen = false
 
   const cargarTareas = async () => {
+    loadingSpinner.value = true
     const snap = await getDocs(collection(db, 'tareas'))
 
     listaTareas.value = snap.docs.map((doc) => {
@@ -72,6 +73,7 @@ onMounted(() => {
         userId: data.userId,
       }
     })
+    loadingSpinner.value = false
   }
 
   cargarTareas()
@@ -80,8 +82,11 @@ onMounted(() => {
 
 <template>
   <main class="bg-(--background-card)">
-    <HeaderNav />
-    <div v-if="!open.isOpen" class="flex flex-col p-6 gap-4">
+    <HeaderNav class="z-1"></HeaderNav>
+    <div
+      v-if="!open.isOpen"
+      class="z-0 animate__animated animate__fadeInLeft contenido flex flex-col p-6 gap-4"
+    >
       <h1 class="text-center">Panel de Control</h1>
       <h4>Gestiona todas las tareas del equipo en un solo lugar</h4>
 
@@ -92,7 +97,9 @@ onMounted(() => {
         <option value="asignadas">Asignadas</option>
       </select>
 
-      <div class=" gap-4 flex flex-col">
+      <Spinner v-if="loadingSpinner" />
+
+      <div class="animate__animated animate__fadeIn cards gap-4 flex flex-col">
         <CardsView
           v-for="(tarea, index) in tareasFiltradas"
           :key="index"
@@ -109,4 +116,30 @@ onMounted(() => {
   </main>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+main {
+  @media screen and (width > 768px) {
+    display: flex;
+  }
+}
+.contenido {
+  @media screen and (width > 768px) {
+    display: flex;
+    width: 100%;
+    max-width: 80%;
+    padding: 40px 200px;
+    // border: 10px solid;
+  }
+}
+
+.cards {
+  @media screen and (width > 768px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (width > 1024px) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+</style>

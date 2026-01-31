@@ -11,10 +11,13 @@ const emit = defineEmits<{
 <template>
   <div
     :class="[
-      !prop.asigned ? 'border-[#00d5ff]' : 'border-[#008cff]',
-      prop.completed ? 'border-[#b0b0b0]' : 'border-[#3dc000]',
+      prop.completed
+        ? 'border-[#b0b0b042]'
+        : !prop.asigned
+          ? 'border-[#3dc000]'
+          : 'border-[#008cff]',
     ]"
-    class="w-full card gap-5 border-2 border-(--label-text-color) rounded-2xl p-4 flex flex-col"
+    class="w-full card gap-5 border-2 rounded-2xl p-4 flex flex-col"
   >
     <p :class="prop.completed ? 'line-through text-[#c4c4c4] italic ' : ''">{{ prop.todo }}</p>
     <div class="flex justify-between">
@@ -24,7 +27,7 @@ const emit = defineEmits<{
         >{{ prop.asigned ? 'Asignada' : 'Sin asignar' }}</span
       >
       <button
-        class="border-0 rounded-2xl p-4 bg-[#efefef]"
+        class="asign border-0 rounded-2xl p-4 bg-[#efefef]"
         v-if="!prop.completed && !prop.asigned"
         @click="emit('asignar')"
       >
@@ -34,4 +37,17 @@ const emit = defineEmits<{
   </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.asign {
+  @media screen and (width > 768px) {
+    
+    transition: all 0.2s ease;
+    &:hover {
+      cursor: pointer;
+      background: #a1d38a;
+
+      scale: 1.1;
+    }
+  }
+}
+</style>

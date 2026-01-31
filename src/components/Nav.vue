@@ -1,17 +1,30 @@
 <script setup lang="ts">
 import { logout } from '@/services/authentication'
 import { useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
 
 const router = useRouter()
 
 const cerrarSesion = async () => {
   try {
     await logout()
-    await router.push('/login')
+    await Swal.fire({
+      icon: 'info',
+      title: 'Sesión cerrada',
+      text: 'Se ha cerrado sesión correctamente',
+      timer: 1500,
+      showConfirmButton: false,
+    })
 
-    console.log('Se ha cerrado sesion correctamente')
+    await router.push('/login')
   } catch (error) {
-    console.log('Error al cerrar sesion')
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error al cerrar sesión',
+      text: 'No se ha podido cerrar sesión',
+      timer: 1500,
+      showConfirmButton: false,
+    })
   }
 }
 </script>
@@ -55,6 +68,12 @@ button {
   &:hover {
     background-color: #fee2e2;
     color: #b91c1c;
+  }
+}
+
+nav {
+  @media screen and (width > 768px) {
+    visibility: hidden;
   }
 }
 </style>

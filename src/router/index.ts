@@ -6,7 +6,7 @@ import { auth } from '@/firebase/config'
 import LoginView from './views/LoginView.vue'
 import RegisterView from './views/RegisterView.vue'
 import DashboardView from './views/DashboardView.vue'
-import Workspace from './views/Workspace.vue'
+import Workspace from './views/WorkspaceView.vue'
 
 export const usuarioActual = ref<User | null>(null)
 export const authCargado = ref(false)
@@ -56,9 +56,10 @@ router.beforeEach(async (to, from, next) => {
   await esperarAuth()
 
   if (to.meta.authRequired && !isAutenticado()) {
-    next('/login')
+    return next('/login')
+
   }
-  next()
+  return next()
 
 
 })
