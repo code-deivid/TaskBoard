@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 656.61 133.22">
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: Tahoma-Bold, Tahoma;
+        font-size: 96px;
+        font-weight: 700;
+        letter-spacing: -.01em;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        isolation: isolate;
+      }
+
+      .cls-1, .cls-3, .cls-4 {
+        fill: #46737c;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-2, .cls-3 {
+        opacity: .95;
+      }
+
+      .cls-3 {
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 12px;
+      }
+    </style>
+  </defs>
+  <text class="cls-1" transform="translate(160 93)"><tspan x="0" y="0">TaskBoard</tspan></text>
+  <rect class="cls-4" width="130" height="130" rx="28" ry="28"/>
+  <path class="cls-3" d="M36,96l18,16,40-42"/>
+  <path class="cls-2" d="M34,14h62c3.31,0,6,2.69,6,6h0c0,3.31-2.69,6-6,6h-62c-3.31,0-6-2.69-6-6h0c0-3.31,2.69-6,6-6Z"/>
+  <path class="cls-2" d="M34,38h46c3.31,0,6,2.69,6,6h0c0,3.31-2.69,6-6,6h-46c-3.31,0-6-2.69-6-6h0c0-3.31,2.69-6,6-6Z"/>
+  <path class="cls-2" d="M34,62h32c3.31,0,6,2.69,6,6h0c0,3.31-2.69,6-6,6h-32c-3.31,0-6-2.69-6-6h0c0-3.31,2.69-6,6-6Z"/>
+</svg>
