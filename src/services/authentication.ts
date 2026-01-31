@@ -1,31 +1,22 @@
 import { auth } from '@/firebase/config'
-import { ref } from 'vue'
-
 import type { IAuthResponse } from '@/models/authResponse'
-
 import {
     createUserWithEmailAndPassword,
-    onAuthStateChanged,
     sendEmailVerification,
     signInWithEmailAndPassword,
-    signOut,
-    type User,
+    signOut
+
 } from 'firebase/auth'
 
-export const usuarioActual = ref<User | null>(null)
-export const authCargado = ref<boolean>(false)
-
-onAuthStateChanged(auth, (user) => {
-    usuarioActual.value = user
-    authCargado.value = true
-})
-
+import { asegurarDocUsuario } from './db'
 
 export const registrar = async (email: string, password: string): Promise<IAuthResponse> => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         const user = userCredential.user
 
+        // ✅ crea/asegura doc en Firestore con docId = uid
+        await asegurarDocUsuario(user)
 
         await sendEmailVerification(user, {
             url: window.location.origin + '/',
@@ -45,6 +36,13 @@ export const registrar = async (email: string, password: string): Promise<IAuthR
         }
     }
 }
+
+
+
+
+
+
+
 
 export const login = async (email: string, password: string): Promise<IAuthResponse> => {
     try {
