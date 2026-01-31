@@ -2,17 +2,30 @@
 import { useOpen } from '@/stores/useOpen'
 import { logout } from '@/services/authentication'
 import { useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
 
 const router = useRouter()
 
 const cerrarSesion = async () => {
   try {
     await logout()
-    await router.push('/login')
+    await Swal.fire({
+      icon: 'info',
+      title: 'Sesión cerrada',
+      text: 'Se ha cerrado sesión correctamente',
+      timer: 1500,
+      showConfirmButton: false,
+    })
 
-    console.log('Se ha cerrado sesion correctamente')
+    await router.push('/login')
   } catch (error) {
-    console.log('Error al cerrar sesion')
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error al cerrar sesión',
+      text: 'No se ha podido cerrar sesión',
+      timer: 1500,
+      showConfirmButton: false,
+    })
   }
 }
 
@@ -89,7 +102,7 @@ nav {
       &:hover {
         cursor: pointer;
         background: none;
-        
+
         scale: 1.1;
       }
     }

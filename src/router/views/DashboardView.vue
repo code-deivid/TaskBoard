@@ -56,7 +56,7 @@ const asignarTarea = async (tarea: ITarea) => {
 }
 
 onMounted(() => {
-  open.isOpen=false
+  open.isOpen = false
 
   const cargarTareas = async () => {
     loadingSpinner.value = true
@@ -82,8 +82,11 @@ onMounted(() => {
 
 <template>
   <main class="bg-(--background-card)">
-    <HeaderNav></HeaderNav>
-    <div v-if="!open.isOpen" class="contenido flex flex-col p-6 gap-4">
+    <HeaderNav class="z-1"></HeaderNav>
+    <div
+      v-if="!open.isOpen"
+      class="z-0 animate__animated animate__fadeInLeft contenido flex flex-col p-6 gap-4"
+    >
       <h1 class="text-center">Panel de Control</h1>
       <h4>Gestiona todas las tareas del equipo en un solo lugar</h4>
 
@@ -96,7 +99,7 @@ onMounted(() => {
 
       <Spinner v-if="loadingSpinner" />
 
-      <div class="cards gap-4 flex flex-col">
+      <div class="animate__animated animate__fadeIn cards gap-4 flex flex-col">
         <CardsView
           v-for="(tarea, index) in tareasFiltradas"
           :key="index"
@@ -139,5 +142,4 @@ main {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
 </style>

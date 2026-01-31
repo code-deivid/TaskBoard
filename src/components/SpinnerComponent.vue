@@ -11,7 +11,7 @@
   width: 36px;
   height: 36px;
   border: 4px solid #a11a1a1a;
-  border-left-color: var(--button);
+  border-left-color: #4caae9;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }

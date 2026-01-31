@@ -47,12 +47,20 @@ onMounted(() => {
 
 <template>
   <main class="bg-(--background-card)">
-    <HeaderNav></HeaderNav>
+    <HeaderNav class="z-1"></HeaderNav>
 
-    <div v-if="!open.isOpen" class="contenido flex flex-col p-6 gap-4">
+    <div
+      v-if="!open.isOpen"
+      class="z-0 animate__animated animate__fadeInLeft contenido flex flex-col p-6 gap-4"
+    >
       <h1 class="text-center">Mi Espacio</h1>
       <h4>Aquí están las tareas que te has asignado a ti mismo</h4>
       <Spinner v-if="loadingSpinner" />
+      <span
+        class="w-full flex justify-center text-[20px] text-[#4caae9] italic"
+        v-if="tareasWorkspace.length < 1"
+        >Todavía no tienes ninguna tarea</span
+      >
       <div class="cards gap-4 flex flex-col">
         <CardsView
           v-for="tarea in tareasWorkspace"
@@ -93,6 +101,13 @@ main {
   @media screen and (width > 1024px) {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+h4 {
+  @media screen and (width > 1024px) {
+    text-align: center;
+    width: 100%;
   }
 }
 </style>

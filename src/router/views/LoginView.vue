@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { IAuthResponse } from '@/models/authResponse'
 import { login } from '@/services/authentication'
+import Swal from 'sweetalert2'
 
 import FormLayout from '@/components/FormLayout.vue'
 import { useRouter } from 'vue-router'
@@ -20,12 +21,31 @@ const puedeEnviar = computed(() => {
 const iniciarSesion = async (): Promise<IAuthResponse> => {
   try {
     const perfil = await login(email.value, password.value)
-    form.value?.reset()
-    await router.push('/dashboard')
+    if (perfil.ok) {
+      form.value?.reset()
+      await router.push('/dashboard')
+      await Swal.fire({
+        icon: 'success',
+        title: 'Inicio de sesión correcto',
+        text: 'Se ha iniciado sesión correctamente',
+        timer: 1500,
+        showConfirmButton: false,
+      })
+      return {
+        ok: true,
+        mensaje: 'Has iniciado sesión enhorabuena',
+        usuario: perfil.usuario,
+      }
+    }
 
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error de credenciales',
+      text: 'Ha habido un error al crear el usuario',
+    })
     return {
-      ok: true,
-      mensaje: 'Has iniciado sesión enhorabuena',
+      ok: false,
+      mensaje: 'No has podido iniciado sesión enhorabuena',
       usuario: perfil.usuario,
     }
   } catch (error) {
@@ -45,15 +65,19 @@ const iniciarSesion = async (): Promise<IAuthResponse> => {
       class="p-4 bg-(--background-card) gap-2 h-dvh w-full flex flex-col items-center justify-center"
     >
       <template #subtitle>
-        <div class="max-w-125 w-full gap-5 flex flex-col items-center justify-center">
+        <div
+          class="animate__animated animate__bounceInDown max-w-125 w-full gap-5 flex flex-col items-center justify-center"
+        >
           <h1>TaskBoard</h1>
-          <p class="text-(--label-text-color)">Un lugar para solventar tus tareas</p>
+          <p class="animate__animated animate__bounceInDown text-(--label-text-color)">
+            Un lugar para solventar tus tareas
+          </p>
         </div>
       </template>
 
       <template #form>
         <form
-          class="p-5 max-w-125 w-full gap-5 rounded-xl p-10px bg-white text-(--label-text-color) flex flex-col"
+          class="animate__animated animate__bounceInDown p-5 max-w-125 w-full gap-5 rounded-xl p-10px bg-white text-(--label-text-color) flex flex-col"
           ref="FORM_ELEMENT"
           @submit.prevent="iniciarSesion"
         >
@@ -72,7 +96,7 @@ const iniciarSesion = async (): Promise<IAuthResponse> => {
       </template>
 
       <template #card-footer>
-        <div class="flex gap-2">
+        <div class="animate__animated animate__bounceInDown flex gap-2">
           <p>No tienes cuenta?</p>
           <router-link to="/register">Registrarse</router-link>
         </div>
