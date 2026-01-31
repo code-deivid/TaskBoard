@@ -38,18 +38,21 @@ const asignarTarea = async (tarea: ITarea) => {
 
   const uid = user.uid
 
-  await updateDoc(doc(db, 'tareas', tarea.id.toString()), {
+  await updateDoc(doc(db, 'tareas', tarea.id), {
     asigned: true,
-    assignedTo: uid,
+    asignedTo: uid,
   })
 
-  // 2) guardar una copia en el workspace del usuario
-  await setDoc(doc(db, 'usuarios', uid, 'workspace', tarea.id.toString()), {
+ 
+  await setDoc(doc(db, 'usuarios', uid, 'workspace', tarea.id), {
     tareaId: tarea.id,
     todo: tarea.todo,
     completed: tarea.completed,
     asigned: true,
+
   })
+
+  listaTareas.value = listaTareas.value.filter((t) => t.id !== tarea.id)
 }
 
 onMounted(() => {
