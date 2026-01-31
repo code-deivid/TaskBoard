@@ -2,6 +2,7 @@
 import HeaderNav from '@/components/HeaderNav.vue'
 import Nav from '@/components/Nav.vue'
 import CardsView from '@/components/CardsView.vue'
+import Spinner from '@/components/SpinnerComponent.vue'
 
 import { useOpen } from '@/stores/useOpen'
 import { onMounted, ref } from 'vue'
@@ -12,12 +13,14 @@ import type { ITarea } from '@/models/tarea'
 
 const open = useOpen()
 const tareasWorkspace = ref<ITarea[]>([])
+const loadingSpinner = ref(true)
 
 const cargarWorkspace = async () => {
   const user = auth.currentUser
   if (!user) return
 
   const uid = user.uid
+  loadingSpinner.value = true
 
   const snap = await getDocs(collection(db, 'usuarios', uid, 'workspace'))
 
@@ -32,6 +35,7 @@ const cargarWorkspace = async () => {
       userId: data.userId,
     } as ITarea
   })
+  loadingSpinner.value = false
 }
 
 onMounted(() => {
@@ -47,7 +51,7 @@ onMounted(() => {
     <div v-if="!open.isOpen" class="flex flex-col p-6 gap-4">
       <h1 class="text-center">Mi Espacio</h1>
       <h4>Aquí están las tareas que te has asignado a ti mismo</h4>
-
+      <Spinner v-if="loadingSpinner" />
       <div class="gap-4 flex flex-col">
         <CardsView
           v-for="tarea in tareasWorkspace"

@@ -11,10 +11,13 @@ const emit = defineEmits<{
 <template>
   <div
     :class="[
-      !prop.asigned ? 'border-[#00d5ff]' : 'border-[#008cff]',
-      prop.completed ? 'border-[#b0b0b0]' : 'border-[#3dc000]',
+      prop.completed
+        ? 'border-[#b0b0b042]'
+        : !prop.asigned
+          ? 'border-[#3dc000]'
+          : 'border-[#008cff]',
     ]"
-    class="w-full card gap-5 border-2 border-(--label-text-color) rounded-2xl p-4 flex flex-col"
+    class="w-full card gap-5 border-2 rounded-2xl p-4 flex flex-col"
   >
     <p :class="prop.completed ? 'line-through text-[#c4c4c4] italic ' : ''">{{ prop.todo }}</p>
     <div class="flex justify-between">
