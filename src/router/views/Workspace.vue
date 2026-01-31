@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import HeaderNav from '@/components/HeaderNav.vue'
 import Nav from '@/components/Nav.vue'
-import { useOpen } from '@/stores/counter'
+import { useOpen } from '@/stores/useOpen'
 import { onMounted } from 'vue'
 
 const open = useOpen()

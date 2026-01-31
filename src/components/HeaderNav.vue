@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useOpen } from '@/stores/counter'
+import { useOpen } from '@/stores/useOpen'
 
 const open = useOpen()
 </script>
