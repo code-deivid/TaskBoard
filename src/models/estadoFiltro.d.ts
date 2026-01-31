@@ -1,0 +1,1 @@
+export type Estado = 'todas' | 'pendientes' | 'completadas' | 'asignadas'

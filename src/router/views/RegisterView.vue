@@ -32,17 +32,24 @@ const register = async (): Promise<IAuthResponse> => {
       }
     }
 
-    const user = await registrar(email.value, password.value)
+    const res = await registrar(email.value, password.value)
+
+    if (!res.ok) {
+      return res
+    }
+
     form.value?.reset()
-    await router.push('/home')
+    await router.push('/dashboard')
 
     return {
       ok: true,
       mensaje: 'Se ha registrado correctamente',
-      usuario: user.usuario,
+      usuario: res.usuario,
     }
   } catch (error) {
+    console.error('❌ Error inesperado al registrar:', error)
     form.value?.reset()
+
     return {
       ok: false,
       mensaje: 'Ha habido un error al crear un usuario',
@@ -84,7 +91,7 @@ const register = async (): Promise<IAuthResponse> => {
             <input v-model="confirmPassword" placeholder="repite tu contraseña" type="password" />
           </label>
 
-          <button type="submit" :disabled="!puedeEnviar">Iniciar sesión</button>
+          <button type="submit" :disabled="!puedeEnviar">Registrarse</button>
         </form>
       </template>
 

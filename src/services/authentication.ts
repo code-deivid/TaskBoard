@@ -1,22 +1,22 @@
 import { auth } from '@/firebase/config'
 import type { IAuthResponse } from '@/models/authResponse'
-
 import {
     createUserWithEmailAndPassword,
     sendEmailVerification,
     signInWithEmailAndPassword,
-    signOut,
+    signOut
 
 } from 'firebase/auth'
 
-
-
+import { asegurarDocUsuario } from './db'
 
 export const registrar = async (email: string, password: string): Promise<IAuthResponse> => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         const user = userCredential.user
 
+        // ✅ crea/asegura doc en Firestore con docId = uid
+        await asegurarDocUsuario(user)
 
         await sendEmailVerification(user, {
             url: window.location.origin + '/',
@@ -36,6 +36,13 @@ export const registrar = async (email: string, password: string): Promise<IAuthR
         }
     }
 }
+
+
+
+
+
+
+
 
 export const login = async (email: string, password: string): Promise<IAuthResponse> => {
     try {

@@ -1,42 +1,109 @@
 <script setup lang="ts">
+import { collection, getDocs, doc, setDoc, updateDoc } from 'firebase/firestore'
+import { auth, db } from '@/firebase/config'
+import { onMounted, ref, computed } from 'vue'
+import { useOpen } from '@/stores/useOpen'
+
 import HeaderNav from '@/components/HeaderNav.vue'
 import Nav from '@/components/Nav.vue'
-import { useOpen } from '@/stores/useOpen'
-import { onMounted, ref } from 'vue'
-import type { ITarea } from '@/models/tarea'
-import axios from 'axios'
 import CardsView from '@/components/CardsView.vue'
 
-const open = useOpen()
+import type { Estado } from '@/models/estadoFiltro'
+import type { ITarea } from '@/models/tarea'
 
+const open = useOpen()
 const listaTareas = ref<ITarea[]>([])
+const estado = ref<Estado>('todas')
+
+const tareasFiltradas = computed(() => {
+  let tareas = listaTareas.value
+  switch (estado.value) {
+    case 'pendientes':
+      tareas = tareas.filter((tarea) => !tarea.completed)
+
+      break
+    case 'completadas':
+      tareas = tareas.filter((tarea) => tarea.completed)
+      break
+    case 'asignadas':
+      tareas = tareas.filter((tarea) => tarea.asigned)
+      break
+  }
+  return tareas
+})
+
+const asignarTarea = async (tarea: ITarea) => {
+  const user = auth.currentUser
+  if (!user) return
+
+  const uid = user.uid
+
+  await updateDoc(doc(db, 'tareas', tarea.id.toString()), {
+    asigned: true,
+    assignedTo: uid,
+  })
+
+  // 2) guardar una copia en el workspace del usuario
+  await setDoc(doc(db, 'usuarios', uid, 'workspace', tarea.id.toString()), {
+    tareaId: tarea.id,
+    todo: tarea.todo,
+    completed: tarea.completed,
+    asigned: true,
+  })
+}
 
 onMounted(() => {
   open.toggleMenu()
 
-  const getData = async (): Promise<ITarea[]> => {
-    const res = await axios.get('https://dummyjson.com/todos')
-    listaTareas.value = res.data.todos
-    return res.data.todos
+  const cargarTareas = async () => {
+    const snap = await getDocs(collection(db, 'tareas'))
+
+    listaTareas.value = snap.docs.map((doc) => {
+      const data = doc.data()
+
+      return {
+        id: doc.id,
+        todo: data.todo,
+        completed: data.completed,
+        asigned: data.asigned,
+        userId: data.userId,
+      }
+    })
   }
-  getData()
+
+  cargarTareas()
 })
 </script>
 
 <template>
-  <HeaderNav />
-  <div v-if="!open.isOpen">
-    <h1>Soy Dashboard</h1>
+  <main class="bg-(--background-card)">
+    <HeaderNav />
+    <div v-if="!open.isOpen" class="flex flex-col p-6 gap-4">
+      <h1 class="text-center">Panel de Control</h1>
+      <h4>Gestiona todas las tareas del equipo en un solo lugar</h4>
 
-    <CardsView
-      v-for="(tarea, index) in listaTareas"
-      :key="index"
-      :completed="tarea.completed"
-      :todo="tarea.todo"
-    />
-  </div>
+      <select v-model="estado" class="border rounded p-2">
+        <option value="todas">Todas</option>
+        <option value="pendientes">No completadas</option>
+        <option value="completadas">Completadas</option>
+        <option value="asignadas">Asignadas</option>
+      </select>
 
-  <Nav v-if="open.isOpen"></Nav>
+      <div class=" gap-4 flex flex-col">
+        <CardsView
+          v-for="(tarea, index) in tareasFiltradas"
+          :key="index"
+          :id="tarea.id"
+          :completed="tarea.completed"
+          :todo="tarea.todo"
+          :asigned="tarea.asigned"
+          @asignar="asignarTarea(tarea)"
+        />
+      </div>
+    </div>
+
+    <Nav v-if="open.isOpen"></Nav>
+  </main>
 </template>
 
 <style scoped lang="scss"></style>
