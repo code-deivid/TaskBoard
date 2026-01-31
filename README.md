@@ -1,48 +1,81 @@
-# TaskBoard
+# Taskboard
 
-This template should help get you started developing with Vue 3 in Vite.
+![Logo](./public/logo-github.svg)
 
-## Recommended IDE Setup
+Taskboard es una aplicación web con una interfaz minimalista para la gestión de tareas. Permite a los usuarios registrarse, iniciar sesión y organizar tareas de forma individual mediante un sistema de asignación personal.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+El proyecto está orientado a la práctica de un flujo completo de aplicación moderna utilizando Vue 3 y Firebase, con una arquitectura clara tanto en el frontend como en la base de datos.
 
-## Recommended Browser Setup
+---
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## Funcionalidades principales
 
-## Type Support for `.vue` Imports in TS
+- Registro y login de usuarios
+- Vista Dashboard con:
+  - Listado de todas las tareas
+  - Tareas completadas
+  - Tareas no completadas
+  - Tareas asignadas
+- Asignación de tareas (una tarea no puede ser asignada por más de un usuario)
+- Vista Workspace:
+  - Muestra únicamente las tareas asignadas al usuario autenticado
+- Manejo de estado global
+- Diseño responsive y minimalista
+- Alertas visuales para acciones importantes
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+---
 
-## Customize configuration
+## Tecnologías utilizadas
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- Vue 3 (Composition API)
+- Pinia (manejo de estado)
+- Tailwind CSS (estilos principales)
+- SCSS (estilos adicionales y responsive)
+- Firebase
+  - Firebase Authentication
+  - Firestore
+- SweetAlert
+- Font Awesome
+- Google Fonts
+- Vite
+- Vercel
 
-## Project Setup
+---
 
-```sh
-npm install
-```
+## Estructura del proyecto
 
-### Compile and Hot-Reload for Development
+### Firestore
 
-```sh
-npm run dev
-```
+La base de datos está estructurada en dos colecciones principales:
 
-### Type-Check, Compile and Minify for Production
+#### Colección tareas
 
-```sh
-npm run build
-```
+- Un documento por cada tarea
+- Identificador generado de forma aleatoria
+- Cada documento contiene un objeto con los siguientes campos:
+  - Nombre de la tarea
+  - Estado de asignación
+  - Estado de completado
 
-### Lint with [ESLint](https://eslint.org/)
+#### Colección usuarios
 
-```sh
-npm run lint
-```
+- Un documento por cada usuario registrado
+- Cada usuario dispone de una subcolección llamada `workspace`
+- Dentro de `workspace`:
+  - Un documento por cada tarea asignada al usuario
+  - El campo de asignación se establece en `true` cuando la tarea es asignada
+
+---
+
+## Flujo de ramas del proyecto
+
+Durante el desarrollo se trabajó con varias ramas independientes:
+
+- Rama Auth: autenticación, login y registro
+- Rama Dashboard: gestión de tareas, dashboard y header
+- Rama Workspace: tareas asignadas, refactorización y despliegue
+
+Estas ramas fueron eliminadas tras realizar pull requests y merges mediante squash, consolidando el trabajo en un único commit final.
+
+Este enfoque ha permitido mejorar la frecuencia y calidad de los commits, así como aprovechar de forma más eficiente las capacidades de Firestore.
+
