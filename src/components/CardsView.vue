@@ -27,7 +27,7 @@ const emit = defineEmits<{
         >{{ prop.asigned ? 'Asignada' : 'Sin asignar' }}</span
       >
       <button
-        class="border-0 rounded-2xl p-4 bg-[#efefef]"
+        class="asign border-0 rounded-2xl p-4 bg-[#efefef]"
         v-if="!prop.completed && !prop.asigned"
         @click="emit('asignar')"
       >
@@ -37,4 +37,17 @@ const emit = defineEmits<{
   </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.asign {
+  @media screen and (width > 768px) {
+    
+    transition: all 0.2s ease;
+    &:hover {
+      cursor: pointer;
+      background: #a1d38a;
+
+      scale: 1.1;
+    }
+  }
+}
+</style>

@@ -57,4 +57,10 @@ button {
     color: #b91c1c;
   }
 }
+
+nav{
+  @media screen and (width > 768px) {
+    visibility: hidden;
+  }
+}
 </style>
