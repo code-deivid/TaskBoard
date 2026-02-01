@@ -89,7 +89,6 @@ main {
     width: 100%;
     max-width: 80%;
     padding: 40px 200px;
-    // border: 10px solid;
   }
 }
 

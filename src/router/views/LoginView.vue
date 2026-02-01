@@ -40,8 +40,8 @@ const iniciarSesion = async (): Promise<IAuthResponse> => {
 
     await Swal.fire({
       icon: 'error',
-      title: 'Error de credenciales',
-      text: 'Ha habido un error al crear el usuario',
+      title: 'No se ha podido iniciar sesión',
+      text: 'Error usuario/contraseña',
     })
     return {
       ok: false,

@@ -33,9 +33,12 @@ const open = useOpen()
 </script>
 <template>
   <header class="bg-white sticky top-0 flex w-full items-center justify-between p-2 shadow-xl">
-    <h3 class="text-xl font-bold">TaskBoard</h3>
+    <div class="flex justify-center items-center w-full max-w-17.5 gap-2">
+      <img src="../../public/logo.svg" alt="" class="hidden" />
+      <h3 class="ml-9 text-xl font-bold">TaskBoard</h3>
+    </div>
     <nav class="hidden">
-      <div>
+      <div class="p-6">
         <RouterLink to="/dashboard">Dashboard</RouterLink>
         <RouterLink to="/workspace">Workspace</RouterLink>
       </div>
@@ -55,9 +58,24 @@ const open = useOpen()
 
   .card-hidden {
     transition: all 1s ease-in;
-    // transform: translate(-200px);
   }
 }
+img {
+  @media screen and (width > 768px) {
+    display: flex;
+    width: 100%;
+    max-width: 100px;
+    left: 20px;
+    top: 20px;
+  }
+}
+
+h3 {
+  @media screen and (width > 768px) {
+    margin-left: 0px;
+  }
+}
+
 header {
   @media screen and (width > 768px) {
     display: flex;
@@ -75,11 +93,13 @@ header {
 
 nav {
   @media screen and (width > 768px) {
-    padding: 20px;
+    // padding: 35px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.111);
+    // box-shadow: 0 -15px 30px -10px rgba(0, 0, 0, 0.2);
   }
   div {
     @media screen and (width > 768px) {

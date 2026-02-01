@@ -38,20 +38,19 @@ const register = async (): Promise<IAuthResponse> => {
       }
     }
 
-    const res = await registrar(email.value, password.value)
-
-    if (!res.ok) {
-      return res
-    }
     await Swal.fire({
       icon: 'warning',
       title: 'Necesitas verificar tu email para poder entrar',
       timer: 1500,
       showConfirmButton: false,
     })
-
+    const res = await registrar(email.value, password.value)
     form.value?.reset()
     await router.push('/login')
+
+    if (!res.ok) {
+      return res
+    }
 
     return {
       ok: true,
@@ -77,15 +76,19 @@ const register = async (): Promise<IAuthResponse> => {
       class="p-4 bg-(--background-card) gap-2 h-dvh w-full flex flex-col items-center justify-center"
     >
       <template #subtitle>
-        <div class="animate__animated animate__bounceInDown  max-w-125 w-full gap-5 flex flex-col items-center justify-center">
+        <div
+          class="animate__animated animate__bounceInDown max-w-125 w-full gap-5 flex flex-col items-center justify-center"
+        >
           <h1>TaskBoard</h1>
-          <p class="animate__animated animate__bounceInDown  text-(--label-text-color)">Un lugar para solventar tus tareas</p>
+          <p class="animate__animated animate__bounceInDown text-(--label-text-color)">
+            Un lugar para solventar tus tareas
+          </p>
         </div>
       </template>
 
       <template #form>
         <form
-          class="animate__animated animate__bounceInDown  p-5 max-w-125 w-full gap-5 rounded-xl p-10px bg-white text-(--label-text-color) flex flex-col"
+          class="animate__animated animate__bounceInDown p-5 max-w-125 w-full gap-5 rounded-xl p-10px bg-white text-(--label-text-color) flex flex-col"
           ref="FORM_ELEMENT"
           @submit.prevent="register"
         >
@@ -108,7 +111,7 @@ const register = async (): Promise<IAuthResponse> => {
       </template>
 
       <template #card-footer>
-        <div class="animate__animated animate__bounceInDown  flex gap-2">
+        <div class="animate__animated animate__bounceInDown flex gap-2">
           <p>¿Ya tienes cuenta?</p>
           <router-link to="/login">Inicia sesión</router-link>
         </div>

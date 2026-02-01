@@ -7,6 +7,8 @@ import {
     signOut
 
 } from 'firebase/auth'
+import Swal from 'sweetalert2'
+
 
 import { asegurarDocUsuario } from './db'
 
@@ -15,12 +17,13 @@ export const registrar = async (email: string, password: string): Promise<IAuthR
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         const user = userCredential.user
 
-        // ✅ crea/asegura doc en Firestore con docId = uid
+
         await asegurarDocUsuario(user)
 
         await sendEmailVerification(user, {
             url: window.location.origin + '/dashboard',
         })
+
 
         return {
             ok: true,
@@ -51,6 +54,11 @@ export const login = async (email: string, password: string): Promise<IAuthRespo
 
         if (!user.emailVerified) {
 
+            await Swal.fire({
+                icon: 'warning',
+                title: 'Error de sesión',
+                text: 'Debes verificar tu email antes de iniciar sesión. Revisa tu bandeja.',
+            })
             await signOut(auth)
             return {
                 ok: false,
@@ -74,7 +82,6 @@ export const login = async (email: string, password: string): Promise<IAuthRespo
     }
 }
 
-// Logout
 export const logout = async () => {
     try {
         await signOut(auth)
