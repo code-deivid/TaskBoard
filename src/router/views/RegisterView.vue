@@ -26,11 +26,6 @@ const puedeEnviar = computed(
 const register = async (): Promise<IAuthResponse> => {
   try {
     if (!coinciden.value) {
-      await Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Las contraseñas no coinciden',
-      })
       return {
         ok: false,
         mensaje: 'Las contraseñas no coinciden',
@@ -38,19 +33,19 @@ const register = async (): Promise<IAuthResponse> => {
       }
     }
 
+    const res = await registrar(email.value, password.value)
+    
+    if (!res.ok) {
+      return res
+    }
     await Swal.fire({
       icon: 'warning',
       title: 'Necesitas verificar tu email para poder entrar',
       timer: 1500,
       showConfirmButton: false,
     })
-    const res = await registrar(email.value, password.value)
     form.value?.reset()
     await router.push('/login')
-
-    if (!res.ok) {
-      return res
-    }
 
     return {
       ok: true,

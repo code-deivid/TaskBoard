@@ -19,7 +19,6 @@ export const registrar = async (email: string, password: string): Promise<IAuthR
 
 
         await asegurarDocUsuario(user)
-
         await sendEmailVerification(user, {
             url: window.location.origin + '/dashboard',
         })
